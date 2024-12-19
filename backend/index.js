@@ -5,6 +5,9 @@ const cors = require('cors');
 
 
 
+const authRoute = require("./routes/auth.route");
+
+
 dotenv.config();
 
 const app = express();
@@ -19,9 +22,9 @@ app.use(cors({
 }));
 
 
+
+
 app.use("/api/auth", authRoute);
-
-
 
 
 const PORT = process.env.PORT || 8800;
