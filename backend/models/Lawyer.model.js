@@ -59,6 +59,12 @@ const lawyerSchema = new mongoose.Schema({
     awards: {
         type: [String], // Array of awards
     },
+
+    number_of_cases_handled: {
+        type: Number,
+        required: false,
+        default: 0
+    }
 });
 
 const Lawyer = mongoose.model('Lawyer', lawyerSchema);

@@ -15,6 +15,7 @@ const addDetailsAction = async (req, res) => {
             email,
             phone_number,
             awards,
+            number_of_cases_handled
         } = req.body;
 
         // Validate required fields
@@ -27,7 +28,8 @@ const addDetailsAction = async (req, res) => {
             !licences_certificates ||
             !jurisdiction ||
             !email ||
-            !phone_number
+            !phone_number ||
+            !number_of_cases_handled
         ) {
             return res.status(400).json({ message: 'All required fields must be provided' });
         }
@@ -51,6 +53,7 @@ const addDetailsAction = async (req, res) => {
             email,
             phone_number,
             awards,
+            number_of_cases_handled,
         });
 
         // Save the lawyer details to the database
