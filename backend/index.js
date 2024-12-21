@@ -6,7 +6,7 @@ const cors = require('cors');
 
 
 const authRoute = require("./routes/auth.route");
-
+const lawyerRoute=require("./routes/lawyer.route");
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ app.use(cors({
 
 
 app.use("/api/auth", authRoute);
-
+app.use("/api/lawyerdetails",lawyerRoute);
 
 const PORT = process.env.PORT || 8800;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
