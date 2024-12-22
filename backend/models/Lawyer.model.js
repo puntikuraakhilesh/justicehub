@@ -19,8 +19,9 @@ const lawyerSchema = new mongoose.Schema({
         required: true,
     },
     work_experience: {
-        type: String, // Summarized work experience details
-        required: true,
+        type: Number, // Summarized work experience details
+        required: false,
+        default:0
     },
     licences_certificates: {
         type: [String], // Array of licenses and certificates
