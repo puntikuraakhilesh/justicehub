@@ -9,6 +9,9 @@ const authRoute = require("./routes/auth.route");
 const lawyerRoute=require("./routes/lawyer.route");
 const casesRoute=require("./routes/cases.route");
 const peersRoute=require("./routes/peers.route");
+const messageRoute=require("./routes/message.route");
+
+
 
 dotenv.config();
 
@@ -30,7 +33,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/lawyerdetails",lawyerRoute);
 app.use("/api/cases",casesRoute);
 app.use("/api/peers",peersRoute);
-
+app.use("/api/messages",messageRoute);
 
 
 

@@ -308,7 +308,7 @@ const changeCaseStatusAction = async (req, res) => {
                 return res.status(400).json({ message: 'Lawyer ID is required for accepting the case' });
             }
 
-            caseRecord.assignedLawyer = lawyer_id;
+            
 
             // Save the updated case
             await caseRecord.save();
