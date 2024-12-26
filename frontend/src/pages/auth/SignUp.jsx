@@ -1,11 +1,20 @@
 import React,{useState} from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+// import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+
+
 function SignUpForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    username: 'user',
+    username: '',
     role: 'citizen', // default role is set to 'user'
   });
 
@@ -13,7 +22,7 @@ function SignUpForm() {
   const [error, setError] = useState();
   const navigate = useNavigate();
 
-  const { email, password, name, role } = formData;
+  const { email, password, username, role } = formData;
 
   const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -25,43 +34,18 @@ function SignUpForm() {
         // localStorage.setItem('token', res.data.token);
         
         if (role === 'citizen') {
-            alert('Citizen registered successfully'); // Navigate to '/admin' route after successful login
+             // Navigate to '/admin' route after successful login
+            await axios.post('http://localhost:8800/api/auth/signup', { username, email, password,role });
+            alert('Citizen registered successfully You can login now');
         } else if (role === 'lawyer') {
-            alert('Citizen registered successfully'); // Navigate to '/employee' route after successful login
+          await axios.post('http://localhost:8800/api/auth/signup', { username, email, password,role });
+            alert('Lawyer registered successfully You can login now'); // Navigate to '/employee' route after successful login
         } 
     } catch (error) {
         console.error('Error response:', error.response); // Log detailed error response
         setError('Error registering user');
     }
   };
-  // const [state, setState] = React.useState({
-  //   name: "",
-  //   email: "",
-  //   password: ""
-  // });
-  // const handleChange = evt => {
-  //   const value = evt.target.value;
-  //   setState({
-  //     ...state,
-  //     [evt.target.name]: value
-  //   });
-  // };
-
-  // const handleOnSubmit = evt => {
-  //   evt.preventDefault();
-
-  //   const { name, email, password } = state;
-  //   alert(
-  //     `You are sign up with name: ${name} email: ${email} and password: ${password}`
-  //   );
-
-  //   for (const key in state) {
-  //     setState({
-  //       ...state,
-  //       [key]: ""
-  //     });
-  //   }
-  // };
 
   return (
     <div className="form-container sign-up-container">
@@ -80,10 +64,10 @@ function SignUpForm() {
         </div>
         <input
           type="text"
-          name="name"
-          value={name}
+          name="username"
+          value={username}
           onChange={onChange}
-          placeholder="Name"
+          placeholder="UserName"
         />
         <input
           type="email"
@@ -99,6 +83,16 @@ function SignUpForm() {
           onChange={onChange}
           placeholder="Password"
         />
+        <FormLabel id="demo-row-radio-buttons-group-label">Role</FormLabel>
+      <RadioGroup
+        row
+        aria-labelledby="demo-row-radio-buttons-group-label"
+        name="row-radio-buttons-group"
+      >
+        <FormControlLabel value="citizen" control={<Radio />} label="Citizen" name="role" checked={role === 'citizen'} onChange={onChange}/>
+        <FormControlLabel value="lawyer" control={<Radio />} label="Lawyer" name="role" checked={role === 'lawyer'} onChange={onChange}/>
+        
+      </RadioGroup>
         <button id="btnbtn">Sign Up</button>
       </form>
     </div>

@@ -1,14 +1,14 @@
-import React,{ useState }  from "react";
+import React,{ useState,useContext }  from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
+import { AuthContext } from "./AuthContext";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import { Link } from "react-router-dom"
 
 function SignInForm() {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ function SignInForm() {
     password: '',
     role: 'citizen', // default role is set to 'user'
   });
-
+  const { login } = useContext(AuthContext);
   const [error, setError] = useState();
   const navigate = useNavigate(); // Use useNavigate hook
 
@@ -30,20 +30,29 @@ function SignInForm() {
 
       
       if (role === 'citizen') {
-        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/admin/login`, formData);
-      localStorage.setItem('token', res.data.token); // Navigate to '/admin' route after successful login
+        const response=await axios.post(`http://localhost:8800/api/auth/login`,{email,password,role});
+
+        const {token,user}=response.data;
+        login(token, user.id ,user.role,user.username);
+        navigate('/citizenhome');
+        alert("Citizen Logged In successfully");
+        //Keep a toast message here
       } 
       else if (role === 'lawyer') {
-        const res = await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}/employee/login`, formData);
-      localStorage.setItem('token', res.data.token);
+        const response=await axios.post(`http://localhost:8800/api/auth/login`,{email,password,role});
+
+        const {token,user}=response.data;
+        if(user.detailsfilled){
+          login(token, user.id ,user.role,user.username);
+          navigate('/lawyerhome');
+          alert("Lawyer Logged In successfully");
+        }
+        else{
+          login(token, user.id ,user.role,user.username);
+          navigate('/lawyerdetails');
+          alert("Lawyer Details not filled. Please fill the details");
+        }
       }
-      
-      // Navigate to appropriate route after login
-      if (role === 'citizen') {
-        navigate('/citizenhome'); // Navigate to '/admin' route after successful login
-      } else if (role === 'lawyer') {
-        navigate('/lawyerhome'); // Navigate to '/employee' route after successful login
-      } 
     } catch (error) {
       console.error(error);
       setError('Error logging in');
