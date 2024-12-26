@@ -8,7 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 // import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-
+import {  useSnackbar } from 'notistack';
 
 function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -17,7 +17,10 @@ function SignUpForm() {
     username: '',
     role: 'citizen', // default role is set to 'user'
   });
-
+  const { enqueueSnackbar } = useSnackbar();
+    const showToast = (message, variant = "info") => {
+      enqueueSnackbar(message, { variant });
+    };
   // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState();
   const navigate = useNavigate();
@@ -36,14 +39,15 @@ function SignUpForm() {
         if (role === 'citizen') {
              // Navigate to '/admin' route after successful login
             await axios.post('http://localhost:8800/api/auth/signup', { username, email, password,role });
-            alert('Citizen registered successfully You can login now');
+            showToast("Citizen Registered Successfully","success")
         } else if (role === 'lawyer') {
           await axios.post('http://localhost:8800/api/auth/signup', { username, email, password,role });
-            alert('Lawyer registered successfully You can login now'); // Navigate to '/employee' route after successful login
+          showToast("Lawyer Registered Successfully","success") // Navigate to '/employee' route after successful login
         } 
     } catch (error) {
         console.error('Error response:', error.response); // Log detailed error response
         setError('Error registering user');
+        showToast("Registration Failed!","error")
     }
   };
 

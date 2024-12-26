@@ -7,7 +7,7 @@ import AuthPage from "./pages/auth/AuthPage";
 import LawyerHome from "./pages/LawyerHome";
 import CitizenHome from "./pages/CitizenHome";
 import LawyerDetails from "./pages/LawyerDetails";
-
+import { SnackbarProvider } from 'notistack';
 // import { Toaster } from "react-hot-toast"; // For toast notifications
 
 
@@ -16,6 +16,7 @@ import LawyerDetails from "./pages/LawyerDetails";
 const App = () => {
   return (
     <AuthProvider>
+      <SnackbarProvider maxSnack={1}>
       <Router>
         <div>
          {/* Navbar
@@ -34,6 +35,7 @@ const App = () => {
         {/* Toaster for Notifications
         <Toaster position="top-center" reverseOrder={false} /> */}
       </Router>
+      </SnackbarProvider>
     </AuthProvider>
   );
 };

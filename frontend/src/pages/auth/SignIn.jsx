@@ -9,8 +9,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from "react-router-dom"
+import Button from '@mui/material/Button';
+import {  useSnackbar } from 'notistack';
+
+
+
 
 function SignInForm() {
+  const { enqueueSnackbar } = useSnackbar();
+  const showToast = (message, variant = "info") => {
+    enqueueSnackbar(message, { variant });
+  };
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -35,7 +44,7 @@ function SignInForm() {
         const {token,user}=response.data;
         login(token, user.id ,user.role,user.username);
         navigate('/citizenhome');
-        alert("Citizen Logged In successfully");
+        showToast("Citizen Logged In successfully!", "success");
         //Keep a toast message here
       } 
       else if (role === 'lawyer') {
@@ -45,17 +54,18 @@ function SignInForm() {
         if(user.detailsfilled){
           login(token, user.id ,user.role,user.username);
           navigate('/lawyerhome');
-          alert("Lawyer Logged In successfully");
+          showToast("Lawyer Logged In successfully!", "success");
         }
         else{
           login(token, user.id ,user.role,user.username);
           navigate('/lawyerdetails');
-          alert("Lawyer Details not filled. Please fill the details");
+          showToast("Lawyer Details not filled. Please fill the details", "info");
         }
       }
     } catch (error) {
       console.error(error);
       setError('Error logging in');
+      showToast("Invalid Credentials Try again!", "error");
     }
   };
 
@@ -109,4 +119,8 @@ function SignInForm() {
   );
 }
 
+
+
+
 export default SignInForm;
+ 
