@@ -44,6 +44,7 @@ function SignInForm() {
         const {token,user}=response.data;
         login(token, user.id ,user.role,user.username);
         navigate('/citizenhome');
+        await window.location.reload();
         showToast("Citizen Logged In successfully!", "success");
         //Keep a toast message here
       } 
@@ -54,6 +55,7 @@ function SignInForm() {
         if(user.detailsfilled){
           login(token, user.id ,user.role,user.username);
           navigate('/lawyerhome');
+          await window.location.reload();
           showToast("Lawyer Logged In successfully!", "success");
         }
         else{
