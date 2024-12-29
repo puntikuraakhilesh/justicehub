@@ -144,8 +144,6 @@
 
 
 
-
-
 // import React, { useContext } from "react";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import AuthProvider, { AuthContext } from "./pages/auth/AuthContext";
@@ -232,10 +230,6 @@
 // };
 
 // export default App;
-
-
-
-
 
 
 import React, { useContext } from "react";
