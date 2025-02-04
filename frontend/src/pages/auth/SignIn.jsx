@@ -11,11 +11,14 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from "react-router-dom"
 import Button from '@mui/material/Button';
 import {  useSnackbar } from 'notistack';
-
+import { useDispatch } from 'react-redux';
+import { setAuthUser } from "../../redux/userSlice";
 
 
 
 function SignInForm() {
+  const dispatch = useDispatch();
+
   const { enqueueSnackbar } = useSnackbar();
   const showToast = (message, variant = "info") => {
     enqueueSnackbar(message, { variant });
@@ -44,8 +47,14 @@ function SignInForm() {
         const {token,user}=response.data;
         login(token, user.id ,user.role,user.username);
         navigate('/citizenhome');
-        await window.location.reload();
+        
+         await window.location.reload();
+        
+        
         showToast("Citizen Logged In successfully!", "success");
+        
+        dispatch(setAuthUser(user));
+        
         //Keep a toast message here
       } 
       else if (role === 'lawyer') {
@@ -54,9 +63,14 @@ function SignInForm() {
         const {token,user}=response.data;
         if(user.detailsfilled){
           login(token, user.id ,user.role,user.username);
+          
           navigate('/lawyerhome');
           await window.location.reload();
+          
+          console.log(user);
+          dispatch(setAuthUser(user));
           showToast("Lawyer Logged In successfully!", "success");
+          
         }
         else{
           login(token, user.id ,user.role,user.username);
