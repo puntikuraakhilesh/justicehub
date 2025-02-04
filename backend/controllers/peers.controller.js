@@ -1,30 +1,34 @@
 const Peers = require('../models/Peers.model');
-const User = require('../models/User.model');
+const mongoose = require('mongoose');
 
 const getUserPeersAction = async (req, res) => {
     try {
         const { userid } = req.params;
 
-        // Validate user ID
-        if (!userid) {
-            return res.status(400).json({ message: 'User ID is required' });
+        // Check if userId is provided
+        if (!userid || userid === "null") {
+            return res.status(400).json({ message: "User ID is missing or invalid." });
         }
 
-        // Find the peers document for the user
-        const userPeers = await Peers.findOne({ user_id: userid }).populate('friends', 'username email role');
+        // Validate if userId is a valid MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(userid)) {
+            return res.status(400).json({ message: "Invalid User ID format." });
+        }
+
+        // Find the user's peers
+        const userPeers = await Peers.findOne({ user_id: userid }).populate("friends", "username email");
 
         if (!userPeers) {
-            return res.status(404).json({ message: 'No peers found for this user' });
+            return res.status(404).json({ message: "No peers found for this user." });
         }
 
-        // Return the user's friends
         res.status(200).json({
-            message: 'Peers fetched successfully',
+            message: "Peers fetched successfully",
             peers: userPeers.friends,
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        console.error("Error fetching peers:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };
 
