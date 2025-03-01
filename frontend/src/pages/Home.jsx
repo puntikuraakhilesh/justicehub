@@ -1,8 +1,10 @@
 import React from 'react'
+import { AuroraHero } from "./HeroSection";
+
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <AuroraHero/>
   )
 }
 
