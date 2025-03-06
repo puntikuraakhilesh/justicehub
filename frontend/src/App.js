@@ -257,7 +257,8 @@ import CasesLawyer from "./pages/lawyerspecific/CasesLawyer";
 // Common Pages
 import Lawyers from "./pages/common/Lawyers";
 import Chats from "./pages/common/Chats";
-
+import Profile from "./pages/lawyerspecific/Profile";
+import LawyerDet from "./pages/common/LawyerDet";
 const App = () => {
   const { token, userId, isLoggedIn, username, role } = useContext(AuthContext); // Access context
 
@@ -295,6 +296,7 @@ const App = () => {
                   <Route path="/mycasescitizen" element={<MyCasesCitizen />} />
                   <Route path="/lawyers" element={<Lawyers />} />
                   <Route path="/chats" element={<Chats />} />
+                  <Route path="/lawyer/:id" element={<LawyerDet />} />
                 </>
               )}
 
@@ -303,8 +305,10 @@ const App = () => {
                 <>
                   <Route path="/lawyerhome" element={<LawyerHome />} />
                   <Route path="/caseslawyer" element={<CasesLawyer />} />
+                  <Route path="/profile" element={<Profile/>} />
                   <Route path="/chats" element={<Chats />} />
                   <Route path="/lawyers" element={<Lawyers />} />
+                  <Route path="/lawyer/:id" element={<LawyerDet />} />
                 </>
               )}
 

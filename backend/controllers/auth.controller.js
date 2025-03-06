@@ -125,4 +125,20 @@ const logoutAction = (req, res) => {
     }
 };
 
-module.exports = { signupAction,loginAction,logoutAction };
+const getAllLawyersAction = async (req, res) => {
+    try {
+      // Find all users with the 'lawyer' role and detailsfilled set to true
+      const lawyers = await User.find({ role: 'lawyer', detailsfilled: true }).select('username email role');
+      
+      if (!lawyers || lawyers.length === 0) {
+        return res.status(404).json({ message: 'No lawyers found' });
+      }
+  
+      res.status(200).json({ data: lawyers });
+    } catch (error) {
+      console.error('Error fetching lawyers:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
+module.exports = { signupAction,loginAction,logoutAction,getAllLawyersAction };

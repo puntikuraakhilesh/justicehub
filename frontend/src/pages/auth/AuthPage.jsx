@@ -25,7 +25,7 @@ const AuthPage = () => {
               <div className="overlay-panel overlay-left">
                 <h1>Welcome Back!</h1>
                 <h6>
-                Sign in to continue your seamless complaint management journey with GrieveEase
+                Sign in to continue your seamless lawyer and citizen management journey with Justice Hub
                 </h6>
                 <button
                   className="ghost"

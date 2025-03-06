@@ -180,4 +180,39 @@ const updateAllDetailsAction = async (req, res) => {
 
 
 
-module.exports = { addDetailsAction,editDetailsAction,updateAllDetailsAction };
+const getDetailsAction = async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+        const lawyerDetails = await Lawyer.findOne({ user_id });
+
+        if (!lawyerDetails) {
+            return res.status(404).json({ message: 'Lawyer details not found' });
+        }
+
+        res.status(200).json(lawyerDetails);
+    } catch (error) {
+        console.error('Error fetching lawyer details:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const getAllDetailsAction = async (req, res) => {
+    try {
+        const lawyers = await Lawyer.find(); // Fetch all lawyers from the database
+        res.status(200).json({
+            success: true,
+            count: lawyers.length,
+            data: lawyers
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server Error',
+            error: error.message
+        });
+    }
+};
+
+
+module.exports = { addDetailsAction,editDetailsAction,updateAllDetailsAction,getDetailsAction,getAllDetailsAction };
