@@ -154,58 +154,50 @@ const assignLawyerAction = async (req, res) => {
 
 const getAssignedCasesAction = async (req, res) => {
     try {
-        const { lawyerid } = req.params;
+        const { lawyerid } = req.params; // Corrected to lawyerid
 
-        // Validate lawyer ID
         if (!lawyerid) {
             return res.status(400).json({ message: 'Lawyer ID is required' });
         }
 
-        // Find cases assigned to the specified lawyer
-        const assignedCases = await Cases.find({ assignedLawyer: lawyerid });
+        // Ensure you're fetching based on the advocate_assigned field
+        const assignedCases = await Case.find({ advocate_assigned: lawyerid });
 
-        if (!assignedCases || assignedCases.length === 0) {
-            return res.status(404).json({ message: 'No cases assigned to this lawyer' });
-        }
-
-        // Return the assigned cases
         res.status(200).json({
             message: 'Assigned cases fetched successfully',
-            cases: assignedCases,
+            cases: assignedCases || [],
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error fetching assigned cases:', error);
+        res.status(500).json({ message: 'Server error', cases: [] });
     }
 };
+
+
+
 
 
 const getAllCasesAction = async (req, res) => {
     try {
         const { userid } = req.params;
 
-        // Validate user ID
         if (!userid) {
             return res.status(400).json({ message: 'User ID is required' });
         }
 
-        // Find all cases associated with the given user ID
-        const userCases = await Cases.find({ user_id: userid });
+        const userCases = await Case.find({ user_id: userid });
 
         if (!userCases || userCases.length === 0) {
             return res.status(404).json({ message: 'No cases found for this user' });
         }
 
-        // Return the user's cases
-        res.status(200).json({
-            message: 'Cases fetched successfully',
-            cases: userCases,
-        });
+        res.status(200).json({'cases':userCases});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 
 
@@ -350,11 +342,32 @@ const changeCaseStatusAction = async (req, res) => {
     }
 };
 
-module.exports = { changeCaseStatusAction };
+const assignLawyer = async (req, res) => {
+    const { caseid } = req.params;
+    const { lawyerId } = req.body;
+  
+    if (!lawyerId) {
+      return res.status(400).json({ message: 'Lawyer ID is required' });
+    }
+  
+    try {
+      const caseToUpdate = await Case.findById(caseid);
+  
+      if (!caseToUpdate) {
+        return res.status(404).json({ message: 'Case not found' });
+      }
+  
+      caseToUpdate.assignedLawyer = lawyerId;
+      caseToUpdate.status = 'Assigned';
+      await caseToUpdate.save();
+  
+      res.status(200).json({ message: 'Lawyer assigned successfully', case: caseToUpdate });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to assign lawyer', error: error.message });
+    }
+  };
+  
 
 
 
-
-
-
-module.exports={addCaseAction,deleteCaseAction,editCaseAction,assignLawyerAction,getAssignedCasesAction,getAllCasesAction,changeCaseStatusAction};
+module.exports={addCaseAction,deleteCaseAction,editCaseAction,assignLawyerAction,getAssignedCasesAction,getAllCasesAction,changeCaseStatusAction,assignLawyer};

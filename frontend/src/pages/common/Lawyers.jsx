@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { useLocation } from 'react-router-dom';
 const Lawyers = () => {
   const [lawyers, setLawyers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,6 +9,7 @@ const Lawyers = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    
     const fetchLawyers = async () => {
       try {
         const usersResponse = await axios.get('http://localhost:8800/api/auth/getalllawyers', {
@@ -34,8 +35,11 @@ const Lawyers = () => {
     fetchLawyers();
   }, [token]);
 
+  const location = useLocation();
+  const caseId = location.state?.caseId;
+
   const handleCardClick = (lawyer) => {
-    navigate(`/lawyer/${lawyer._id}`, { state: { lawyer } });
+    navigate(`/lawyer/${lawyer._id}`, { state: { lawyer, caseId } });
   };
 
   const filteredLawyers = lawyers.filter((lawyer) => {

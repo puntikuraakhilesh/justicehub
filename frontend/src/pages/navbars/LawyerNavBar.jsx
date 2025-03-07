@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 const tabs = [
   { name: "Home", href: "/lawyerhome" },
   { name: "Profile", href: "/profile" },
-  { name: "Cases", href: "/cases" },
+  { name: "Cases", href: "/caseslawyer" },
   { name: "Lawyers", href: "/lawyers" },
   { name: "Chats", href: "/chats" },
 ];
