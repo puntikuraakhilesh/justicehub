@@ -128,7 +128,7 @@ function SignInForm() {
         
       </RadioGroup>
     
-        <a href="/">Forgot your password?</a>
+        
         <button className="loginBtn">Sign In</button>
       </form>
     </div>

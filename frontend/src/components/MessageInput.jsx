@@ -1,3 +1,4 @@
+// src/components/MessageInput.jsx
 import React, { useState } from "react";
 import { TextField, Button, Box } from "@mui/material";
 import axios from "axios";
@@ -5,13 +6,15 @@ import socket from "../socket";
 
 const MessageInput = ({ selectedPeer, setMessages }) => {
   const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
   const sendMessage = async () => {
     if (!message.trim() || !selectedPeer) return;
 
-    const token = localStorage.getItem("token");
+    setSending(true);
 
     try {
+      const token = localStorage.getItem("token");
       const res = await axios.post(
         `http://localhost:8800/api/messages/sendmessage/${selectedPeer._id}`,
         { message },
@@ -23,12 +26,14 @@ const MessageInput = ({ selectedPeer, setMessages }) => {
       setMessage("");
     } catch (error) {
       console.error("Error sending message:", error);
+    } finally {
+      setSending(false);
     }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevents adding a new line in the input field
+      e.preventDefault();
       sendMessage();
     }
   };
@@ -40,16 +45,74 @@ const MessageInput = ({ selectedPeer, setMessages }) => {
         label="Type a message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyPress} // Capture Enter key press
+        onKeyDown={handleKeyPress}
       />
-      <Button variant="contained" color="primary" onClick={sendMessage}>
-        Send
+      <Button variant="contained" color="primary" onClick={sendMessage} disabled={sending}>
+        {sending ? "Sending..." : "Send"}
       </Button>
     </Box>
   );
 };
 
 export default MessageInput;
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import { TextField, Button, Box } from "@mui/material";
+// import axios from "axios";
+// import socket from "../socket";
+
+// const MessageInput = ({ selectedPeer, setMessages }) => {
+//   const [message, setMessage] = useState("");
+
+//   const sendMessage = async () => {
+//     if (!message.trim() || !selectedPeer) return;
+
+//     const token = localStorage.getItem("token");
+
+//     try {
+//       const res = await axios.post(
+//         `http://localhost:8800/api/messages/sendmessage/${selectedPeer._id}`,
+//         { message },
+//         { headers: { Authorization: `Bearer ${token}` } }
+//       );
+
+//       setMessages((prev) => [...prev, res.data.newMessage]);
+//       socket.emit("sendMessage", res.data.newMessage);
+//       setMessage("");
+//     } catch (error) {
+//       console.error("Error sending message:", error);
+//     }
+//   };
+
+//   const handleKeyPress = (e) => {
+//     if (e.key === "Enter") {
+//       e.preventDefault(); // Prevents adding a new line in the input field
+//       sendMessage();
+//     }
+//   };
+
+//   return (
+//     <Box display="flex" gap={2} sx={{ mt: 2 }}>
+//       <TextField
+//         fullWidth
+//         label="Type a message"
+//         value={message}
+//         onChange={(e) => setMessage(e.target.value)}
+//         onKeyDown={handleKeyPress} // Capture Enter key press
+//       />
+//       <Button variant="contained" color="primary" onClick={sendMessage}>
+//         Send
+//       </Button>
+//     </Box>
+//   );
+// };
+
+// export default MessageInput;
 
 
 
