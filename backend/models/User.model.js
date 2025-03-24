@@ -29,22 +29,22 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Hash password before saving the user
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) {
-        return next();
-    }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
+    // Hash password before saving the user
+    userSchema.pre('save', async function (next) {
+        if (!this.isModified('password')) {
+            return next();
+        }
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    });
 
-// Method to compare hashed password with plain text password
-userSchema.methods.matchPassword = async function (enteredPassword) {
-    console.log("User pwd : " + this.password);
-    return await bcrypt.compare(enteredPassword, this.password);
-};
+    // Method to compare hashed password with plain text password
+    userSchema.methods.matchPassword = async function (enteredPassword) {
+        console.log("User pwd : " + this.password);
+        return await bcrypt.compare(enteredPassword, this.password);
+    };
 
-const User = mongoose.model('User', userSchema);
+    const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+    module.exports = User;
