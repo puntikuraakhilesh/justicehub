@@ -201,74 +201,6 @@ const getAllCasesAction = async (req, res) => {
 
 
 
-// const changeCaseStatusAction = async (req, res) => {
-//     try {
-//         const { caseid } = req.params;
-//         const { status, lawyer_id } = req.body;
-
-//         // Validate inputs
-//         if (!caseid || !status) {
-//             return res.status(400).json({ message: 'Case ID and status are required' });
-//         }
-
-//         if (!['accepted', 'rejected'].includes(status)) {
-//             return res.status(400).json({ message: 'Invalid status. Must be "accepted" or "rejected".' });
-//         }
-
-//         // Find the case by ID
-//         const caseRecord = await Case.findById(caseid);
-//         if (!caseRecord) {
-//             return res.status(404).json({ message: 'Case not found' });
-//         }
-
-//         // Update the case status
-//         caseRecord.case_status = status;
-
-//         // If the case is accepted, update the assignedLawyer and the Peers model
-//         if (status === 'accepted') {
-//             if (!lawyer_id) {
-//                 return res.status(400).json({ message: 'Lawyer ID is required for accepting the case' });
-//             }
-
-//             caseRecord.assignedLawyer = lawyer_id;
-
-//             // Save the updated case
-//             await caseRecord.save();
-
-//             // Update Peers model
-//             const userPeer = await Peers.findOne({ user_id: caseRecord.user_id });
-//             const lawyerPeer = await Peers.findOne({ user_id: lawyer_id });
-
-//             if (userPeer && lawyerPeer) {
-//                 // Add lawyer to the user's friends list
-//                 if (!userPeer.friends.includes(lawyer_id)) {
-//                     userPeer.friends.push(lawyer_id);
-//                 }
-
-//                 // Add user to the lawyer's friends list
-//                 if (!lawyerPeer.friends.includes(caseRecord.user_id)) {
-//                     lawyerPeer.friends.push(caseRecord.user_id);
-//                 }
-
-//                 // Save the updated Peers records
-//                 await userPeer.save();
-//                 await lawyerPeer.save();
-//             }
-//         } else {
-//             // Save the updated case for "rejected" status
-//             await caseRecord.save();
-//         }
-
-//         res.status(200).json({ message: 'Case status updated successfully', case: caseRecord });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Server error' });
-//     }
-// };
-
-
-
-
 
 
 const changeCaseStatusAction = async (req, res) => {
@@ -371,3 +303,126 @@ const assignLawyer = async (req, res) => {
 
 
 module.exports={addCaseAction,deleteCaseAction,editCaseAction,assignLawyerAction,getAssignedCasesAction,getAllCasesAction,changeCaseStatusAction,assignLawyer};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const changeCaseStatusAction = async (req, res) => {
+//     try {
+//         const { caseid } = req.params;
+//         const { status, lawyer_id } = req.body;
+
+//         // Validate inputs
+//         if (!caseid || !status) {
+//             return res.status(400).json({ message: 'Case ID and status are required' });
+//         }
+
+//         if (!['accepted', 'rejected'].includes(status)) {
+//             return res.status(400).json({ message: 'Invalid status. Must be "accepted" or "rejected".' });
+//         }
+
+//         // Find the case by ID
+//         const caseRecord = await Case.findById(caseid);
+//         if (!caseRecord) {
+//             return res.status(404).json({ message: 'Case not found' });
+//         }
+
+//         // Update the case status
+//         caseRecord.case_status = status;
+
+//         // If the case is accepted, update the assignedLawyer and the Peers model
+//         if (status === 'accepted') {
+//             if (!lawyer_id) {
+//                 return res.status(400).json({ message: 'Lawyer ID is required for accepting the case' });
+//             }
+
+//             caseRecord.assignedLawyer = lawyer_id;
+
+//             // Save the updated case
+//             await caseRecord.save();
+
+//             // Update Peers model
+//             const userPeer = await Peers.findOne({ user_id: caseRecord.user_id });
+//             const lawyerPeer = await Peers.findOne({ user_id: lawyer_id });
+
+//             if (userPeer && lawyerPeer) {
+//                 // Add lawyer to the user's friends list
+//                 if (!userPeer.friends.includes(lawyer_id)) {
+//                     userPeer.friends.push(lawyer_id);
+//                 }
+
+//                 // Add user to the lawyer's friends list
+//                 if (!lawyerPeer.friends.includes(caseRecord.user_id)) {
+//                     lawyerPeer.friends.push(caseRecord.user_id);
+//                 }
+
+//                 // Save the updated Peers records
+//                 await userPeer.save();
+//                 await lawyerPeer.save();
+//             }
+//         } else {
+//             // Save the updated case for "rejected" status
+//             await caseRecord.save();
+//         }
+
+//         res.status(200).json({ message: 'Case status updated successfully', case: caseRecord });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// };
+
