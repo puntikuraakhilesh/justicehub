@@ -103,6 +103,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { motion } from "framer-motion";
 import { FiUser } from "react-icons/fi";
+import Chatbot from "./common/Chatbot";
 
 const CitizenHome = () => {
   const [username, setUsername] = useState("");
@@ -113,8 +114,8 @@ const CitizenHome = () => {
     setUsername(storedUsername);
   }, []);
 
-  return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white px-6">
+  return (<>
+  <div className="flex h-screen items-center justify-center bg-gradient-to-br from-gray-900 to-black text-white px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -147,6 +148,9 @@ const CitizenHome = () => {
         </motion.div>
       </motion.div>
     </div>
+    <Chatbot username={username}/>
+  </>
+    
   );
 };
 
